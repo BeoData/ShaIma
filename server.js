@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const express = require('express');
 const expressWs = require('express-ws');
 const path = require('path');
@@ -101,4 +102,38 @@ app.ws('/ws', (ws, req) => {
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
+=======
+const WebSocket = require('ws');
+const port = 8080; // Prilagodite port prema klijentu
+const wss = new WebSocket.Server({ port: port });
+
+console.log(`WebSocket server started on port ${port}`);
+
+wss.on('connection', (ws) => {
+    console.log('Client connected.');
+    console.log('connection state:', ws.readyState);
+
+    ws.on('message', (message) => {
+        try {
+            const data = JSON.parse(message);
+            // ... obrada poruke ...
+        } catch (error) {
+            console.error('Error parsing message:', error);
+        }
+    });
+
+    ws.on('close', () => {
+        console.log('Client disconnected.');
+        console.log('connection state:', ws.readyState);
+    });
+
+    ws.on('error', (error) => {
+        console.error('WebSocket error:', error);
+        console.log('connection state:', ws.readyState);
+    });
+});
+
+wss.on('error', (error) => {
+    console.error('Server error:', error);
+>>>>>>> c3e4f6b09864564292d97c0927a3ff84fbd8feeb
 });
