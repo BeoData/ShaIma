@@ -2,15 +2,9 @@
   "name": "shaima",
   "version": "1.0.0",
   "description": "A multi-user chat application using WebSockets.",
-<<<<<<< HEAD
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
-=======
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
->>>>>>> c3e4f6b09864564292d97c0927a3ff84fbd8feeb
   },
   "keywords": [
     "websocket",
@@ -21,14 +15,8 @@
   "author": "Dejan Simic",
   "license": "ISC",
   "dependencies": {
-<<<<<<< HEAD
     "express": "^5.1.0",
     "express-ws": "^5.0.2",
     "ws": "^8.18.1"
   }
 }
-=======
-    "ws": "^8.18.1"
-  }
-}
->>>>>>> c3e4f6b09864564292d97c0927a3ff84fbd8feeb
