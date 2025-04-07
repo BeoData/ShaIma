@@ -4,7 +4,6 @@ const cors = require('cors');
 
 const app = express();
 expressWs(app);
-
 app.use(cors());
 app.use(express.static('public')); // Da serviraš npr. index.html
 
@@ -71,7 +70,7 @@ app.ws('/ws', (ws, req) => {
   });
 });
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`WebSocket server running on ws://localhost:${PORT}/ws`);
 });
