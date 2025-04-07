@@ -1,4 +1,5 @@
-const socket = new WebSocket('ws://localhost:8080/ws');
+//const socket = new WebSocket('ws://localhost:8080/ws');
+const socket = new WebSocket('wss://shaima.onrender.com/ws');
 
 const username = prompt("Enter your username:");
 socket.addEventListener('open', () => {
