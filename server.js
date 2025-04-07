@@ -1,90 +1,77 @@
 const express = require('express');
 const expressWs = require('express-ws');
-const path = require('path');
+const cors = require('cors');
 
 const app = express();
 expressWs(app);
 
-// Middleware za serviranje statičkih fajlova
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
+app.use(express.static('public')); // Da serviraš npr. index.html
 
-// Lista prijavljenih korisnika
-const users = new Set();
-
-// Helper funkcija za slanje liste korisnika svim klijentima
-function broadcastUserList(activeConnections) {
-  const userList = Array.from(users);
-  const message = JSON.stringify({ type: 'userList', users: userList });
-  for (const client of activeConnections) {
-    if (client.readyState === client.OPEN) {
-      client.send(message);
-    }
-  }
-}
-
-// Skup aktivnih WebSocket konekcija
+const users = new Map(); // username => ws
 const activeConnections = new Set();
 
-// Glavna ruta za serviranje HTML stranice
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+function broadcastUserList() {
+  const userList = Array.from(users.keys());
+  const message = JSON.stringify({ type: 'userList', users: userList });
 
-// WebSocket ruta
+  activeConnections.forEach(ws => {
+    if (ws.readyState === ws.OPEN) {
+      ws.send(message);
+    }
+  });
+}
+
+function broadcastMessage(username, message) {
+  const data = JSON.stringify({ type: 'message', username, message });
+
+  activeConnections.forEach(ws => {
+    if (ws.readyState === ws.OPEN) {
+      ws.send(data);
+    }
+  });
+}
+
 app.ws('/ws', (ws, req) => {
-  console.log('Client connected.');
   activeConnections.add(ws);
 
-  ws.on('message', (message) => {
+  ws.on('message', (msg) => {
     try {
-      const data = JSON.parse(message);
+      const data = JSON.parse(msg);
 
       switch (data.type) {
         case 'join':
-          const username = data.username;
-          if (username && !users.has(username)) {
-            users.add(username);
-            console.log(`User joined: ${username}`);
-            broadcastUserList(activeConnections);
-          }
+          ws.username = data.username;
+          users.set(data.username, ws);
+          console.log(`User joined: ${data.username}`);
+          broadcastUserList();
           break;
 
         case 'message':
-          const outgoingMessage = JSON.stringify({
-            type: 'message',
-            username: data.username,
-            message: data.message,
-          });
-          for (const client of activeConnections) {
-            if (client.readyState === client.OPEN) {
-              client.send(outgoingMessage);
-            }
+          if (ws.username && data.message) {
+            broadcastMessage(ws.username, data.message);
           }
           break;
 
         default:
-          console.warn('Unknown message type:', data.type);
+          console.warn('Nepoznata poruka:', data);
       }
     } catch (error) {
-      console.error('Error parsing message:', error);
+      console.error('Invalid JSON:', error);
     }
   });
 
   ws.on('close', () => {
-    console.log('Client disconnected.');
+    console.log(`Disconnected: ${ws.username || 'unknown user'}`);
     activeConnections.delete(ws);
-
-    // Jednostavno ažuriraj listu bez komplikovanog username tracking-a
-    broadcastUserList(activeConnections);
-  });
-
-  ws.on('error', (error) => {
-    console.error('WebSocket error:', error);
+    if (ws.username && users.has(ws.username)) {
+      users.delete(ws.username);
+      broadcastUserList();
+    }
   });
 });
 
-// Pokretanje servera
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
+  console.log(`WebSocket server running on ws://localhost:${PORT}/ws`);
 });
