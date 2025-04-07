@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const express = require('express');
 const expressWs = require('express-ws');
 const path = require('path');
@@ -102,7 +101,7 @@ app.ws('/ws', (ws, req) => {
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
-=======
+
 const WebSocket = require('ws');
 const port = 8080; // Prilagodite port prema klijentu
 const wss = new WebSocket.Server({ port: port });
@@ -135,5 +134,5 @@ wss.on('connection', (ws) => {
 
 wss.on('error', (error) => {
     console.error('Server error:', error);
->>>>>>> c3e4f6b09864564292d97c0927a3ff84fbd8feeb
+
 });
