@@ -1,0 +1,9 @@
+# Set the directory for the public folder as the document root
+RewriteEngine On
+
+# This rule redirects all requests to the public folder
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ /public/$1 [L]
+
+# Make sure index.html is served as the default file for the public folder
+DirectoryIndex index.html

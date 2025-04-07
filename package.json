@@ -1,0 +1,22 @@
+{
+  "name": "shaima",
+  "version": "1.0.0",
+  "description": "A multi-user chat application using WebSockets.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "websocket",
+    "chat",
+    "multi-user",
+    "realtime"
+  ],
+  "author": "Dejan Simic",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-ws": "^5.0.2",
+    "ws": "^8.18.1"
+  }
+}

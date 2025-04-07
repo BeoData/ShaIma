@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Aplikacija za Više Korisnika</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        #login-container {
+            padding: 20px;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+
+        #username-input {
+            padding: 8px;
+            margin-right: 10px;
+            width: 200px;
+        }
+
+        #login-button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #chat-container {
+            flex-grow: 1;
+            display: flex;
+        }
+
+        #user-list {
+            width: 200px;
+            border-right: 1px solid #ddd;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        #chat-area {
+            flex-grow: 1;
+            padding: 10px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #message-form {
+            padding: 10px;
+            display: flex;
+        }
+
+        #message-input {
+            flex-grow: 1;
+            padding: 8px;
+            margin-right: 10px;
+        }
+
+        #send-button {
+            padding: 8px 15px;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-container">
+        <input type="text" id="username-input" placeholder="Unesite korisničko ime...">
+        <button id="login-button">Prijava</button>
+    </div>
+
+    <div id="chat-container">
+        <div id="user-list">
+            <h2>Korisnici:</h2>
+            <ul id="users"></ul>
+        </div>
+        <div id="chat-area"></div>
+    </div>
+
+    <form id="message-form">
+        <input type="text" id="message-input" placeholder="Unesite poruku...">
+        <button id="send-button">Pošalji</button>
+    </form>
+
+    <script src="client.js"></script>
+</body>
+</html>
